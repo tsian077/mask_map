@@ -1,0 +1,92 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin=""/> -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css"></link> 
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css"></link> 
+        <link rel="stylesheet" type="text/css" href="mystyle.css">
+
+<style>
+
+
+</style>
+
+</head>
+
+<body>
+
+<div id="mapid"></div>
+<!-- Make sure you put this AFTER Leaflet's CSS -->
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+
+
+<script>
+
+var mymap = L.map('mapid').setView([22.604799, 120.2976256], 16);
+
+L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(mymap);
+
+    var greenIcon = new L.Icon({
+            iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41]
+            });
+
+    // var marker = L.marker([51.5, -0.09]).addTo(mymap);
+
+    // var polygon = L.polygon([
+    //         [51.509, -0.08],
+    //         [51.503, -0.06],
+    //         [51.51, -0.047]
+    //     ]).addTo(mymap);
+    var markers = new L.MarkerClusterGroup().addTo(mymap);
+    fetch('https://raw.githubusercontent.com/kiang/pharmacies/master/json/points.json?fbclid=IwAR0YuD1pDgQH8Nmk2-WoRzDok000l0Hj2ghGXtNpkNV36mDJbZTucPuzdXs')
+    .then((data)=>data.json())
+    .then((res)=>{
+
+        // for(var i =0;i<1000;i++)
+        // {
+        //     // var marker = L.marker([res['features'][i]['geometry']['coordinates'][1],res['features'][i]['geometry']['coordinates'][0]]).addTo(mymap)
+        //     markers.addLayer(L.marker([res['features'][i]['geometry']['coordinates'][1],res['features'][i]['geometry']['coordinates'][0]],{icon:greenIcon}))
+        // }
+        // console.log(res)
+        res.features.map((v,i)=>{
+                // console.log(v['geometry']['coordinates'][0],v['geometry']['coordinates'][1])
+                markers.addLayer(L.marker([v['geometry']['coordinates'][1],v['geometry']['coordinates'][0]],{icon:greenIcon}))
+                // var marker = L.marker([v['geometry']['coordinates'][0],v['geometry']['coordinates'][1]]).addTo(mymap)
+        })
+        // var marker = L.marker([res['features'][0]['geometry']['coordinates'][1],res['features'][0]['geometry']['coordinates'][0]]).addTo(mymap)
+        // console.log(res['features'][0])
+        // console.log(res['features'][0]['properties']['name'])
+        // console.log(res['features'][0]['properties']['mask_adult'])
+        // console.log(res['features'][0]['properties']['mask_child'])
+        // console.log(res['features'][0]['geometry']['coordinates'][0])
+        // console.log(res['features'][0]['geometry']['coordinates'][1])
+       
+    })
+   
+
+</script>
+
+</body>
+
+</html> 
+
+
+
+
+
